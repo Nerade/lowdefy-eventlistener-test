@@ -1,0 +1,112 @@
+id: new-order
+type: PageHeaderMenu
+
+events:
+  onInit:
+    - id: generate_id
+      type: SetState
+      params: 
+        order_id: 
+          _uuid: null
+
+properties:
+  title: Some form
+layout:
+  contentJustify: center
+blocks:
+
+  - id: content_card
+    type: Card
+    layout:
+      size: 800
+      contentGutter: 16
+    blocks:
+      - id: page_heading
+        type: Title
+        properties:
+          content: Entry Form
+          level: 3
+
+      
+      - id: item_select
+        type: MultipleSelector
+        properties:
+          placeholder: Select items
+          required: true
+          label:
+            title: "Some Selection"
+            inline: true
+            extraStyle:
+              font-style: bold
+          options:
+           - "One"
+           - "Two"
+           - "Three"
+           - "Four"
+        events:
+          onChange:
+            - id: update_item
+              type: SetState
+              params:
+                item:
+                  _state: item_select.0
+
+      - id: item
+        type: TextInput
+        layout:
+          span: 8
+        properties:
+          label:
+            title: First selected Item
+            inline: true
+          disabled: true
+
+      - id: file_attachment
+        type: Html
+        layout:
+          span: 12
+        properties:
+          title: Icon
+          html: <label for="input_file">Attachment (optional):</label><input type="file" id="input_file" name="input_file" accept="*">
+          label:
+            span: 10
+            align: right
+        events:
+           onMount:
+             - id: upload_file
+               type: JsAction
+               params:
+                 name: uploadFileAsync
+                 args:
+                   - input_file
+
+      - id: submit_button
+        type: Button
+        layout:
+          push: 19
+        properties:
+          color: '#52c41a'
+          icon: SaveOutlined
+          title: Submit
+          size: large
+        events:
+          onClick:
+
+            - id: validate_order
+              type: Validate
+
+            #- id: submit_order
+            #  type: Request
+            #  params:
+            #    place_order
+
+            - id: notify_user
+              type: Message
+              params:
+                status: success
+                duration: 5
+                description: Submitted successfully
+
+            - id: reset_form
+              type: Reset
+
