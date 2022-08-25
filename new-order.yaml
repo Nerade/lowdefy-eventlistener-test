@@ -61,24 +61,30 @@ blocks:
             inline: true
           disabled: true
 
+      
       - id: file_attachment
-        type: Html
-        layout:
-          span: 12
+        type: Label
         properties:
-          title: Icon
-          html: <label for="input_file">Attachment (optional):</label><input type="file" id="input_file" name="input_file" accept="*">
+          title: Attachment (optional)
           label:
-            span: 10
-            align: right
-        events:
-           onMount:
-             - id: upload_file
-               type: JsAction
-               params:
-                 name: uploadFileAsync
-                 args:
-                   - input_file
+            inline: true
+          extra:
+            _state: file_attachment
+        blocks:
+          - id: file_attachment
+            type: Button
+            layout:
+              span: 12
+            properties:
+              title: Upload
+            events:
+              onClick:
+                - id: upload_file
+                  type: JsAction
+                  params:
+                    name: uploadFileAsync
+                    args:
+                      - file_attachment
 
       - id: submit_button
         type: Button
